@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Book extends Model
 {
-    use HasFactory;
-
-    protected $guarded = []; 
+    // Tambahkan baris ini agar fungsi create() dan update() bisa berjalan
+    protected $fillable = ['title', 'author', 'year', 'stock'];
 }
