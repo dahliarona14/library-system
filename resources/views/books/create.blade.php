@@ -8,17 +8,42 @@
     
     <form action="{{ route('books.store') }}" method="POST">
         @csrf
-        <label>Judul:</label><br>
-        <input type="text" name="title"><br>
         
-        <label>Penulis:</label><br>
-        <input type="text" name="author"><br>
+        <div>
+            <label>Judul:</label><br>
+            <input type="text" name="title" value="{{ old('title') }}">
+            @error('title')
+                <p style="color: red; margin: 0;">{{ $message }}</p>
+            @enderror
+            <br>
+        </div>
         
-        <label>Tahun:</label><br>
-        <input type="number" name="year"><br>
+        <div>
+            <label>Penulis:</label><br>
+            <input type="text" name="author" value="{{ old('author') }}">
+            @error('author')
+                <p style="color: red; margin: 0;">{{ $message }}</p>
+            @enderror
+            <br>
+        </div>
         
-        <label>Stok:</label><br>
-        <input type="number" name="stock"><br><br>
+        <div>
+            <label>Tahun:</label><br>
+            <input type="number" name="year" value="{{ old('year') }}">
+            @error('year')
+                <p style="color: red; margin: 0;">{{ $message }}</p>
+            @enderror
+            <br>
+        </div>
+        
+        <div>
+            <label>Stok:</label><br>
+            <input type="number" name="stock" value="{{ old('stock') }}">
+            @error('stock')
+                <p style="color: red; margin: 0;">{{ $message }}</p>
+            @enderror
+            <br><br>
+        </div>
         
         <button type="submit">Simpan</button>
     </form>
