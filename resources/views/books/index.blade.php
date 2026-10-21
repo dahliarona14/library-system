@@ -18,6 +18,7 @@
         <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
             <p>Judul: {{ $book->title }}</p>
             <p>Penulis: {{ $book->author }}</p>
+            <p>Kategori: {{ $book->category?->nama ?? 'Belum ada kategori' }}</p>
             
             <a href="{{ route('books.edit', $book) }}">Edit</a>
 

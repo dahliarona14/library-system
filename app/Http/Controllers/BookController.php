@@ -2,69 +2,79 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
+use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Models\Book; // Jangan lupa import Model Book
 
 class BookController extends Controller
 {
     // READ - Menampilkan daftar buku
     public function index()
     {
-        $books = Book::all();
+        $books = Book::with('category')->get();
+
         return view('books.index', compact('books'));
     }
 
     // CREATE - Menampilkan form tambah
     public function create()
     {
-        return view('books.create');
+        $categories = Category::orderBy('nama')->get();
+
+        return view('books.create', compact('categories'));
     }
 
     // STORE - Menyimpan data baru
     public function store(Request $request)
-{
-    // 1. Proses Validasi (Satpam)
-    $validated = $request->validate([
-    // Aturan baru 'unique:books,title' mencegah adanya judul buku yang sama di database
-    'title'  => 'required|string|max:255|unique:books,title', 
-    'author' => 'required|string|max:255',
-    // Aturan baru 'digits:4' memastikan input tahun harus pas berjumlah 4 angka
-    'year'   => 'required|integer|digits:4|min:1900',         
-    'stock'  => 'required|integer|min:0',
-]);
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'year' => 'required|integer|min:1900',
+            'stock' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id',
+        ]);
 
-    // 2. Jika lolos validasi, simpan ke database
-    // Variabel $validated hanya berisi data yang sudah aman.
-    Book::create($validated);
+        Book::create($validated);
 
-    // 3. Kembali ke halaman utama (index) dengan pesan sukses
-    return redirect()
-        ->route('books.index')
-        ->with('success', 'Data buku berhasil ditambahkan.');
-}
+        return redirect()
+            ->route('books.index')
+            ->with('success', 'Buku berhasil ditambahkan.');
+    }
 
-    // UPDATE - Menampilkan form edit (Menggunakan Route Model Binding)
+    // EDIT - Menampilkan form edit
     public function edit(Book $book)
     {
-        return view('books.edit', compact('book'));
+        $categories = Category::orderBy('nama')->get();
+
+        return view('books.edit', compact('book', 'categories'));
     }
 
-    // UPDATE - Menyimpan perubahan
+    // UPDATE - Menyimpan perubahan data buku
     public function update(Request $request, Book $book)
     {
-        $book->update([
-            'title' => $request->title,
-            'author' => $request->author,
-            'year' => $request->year,
-            'stock' => $request->stock,
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'year' => 'required|integer|min:1900',
+            'stock' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id',
         ]);
-        return redirect()->route('books.index');
+
+        $book->update($validated);
+
+        return redirect()
+            ->route('books.index')
+            ->with('success', 'Buku berhasil diperbarui.');
     }
 
-    // DELETE - Menghapus data
+    // DELETE - Menghapus data buku
     public function destroy(Book $book)
     {
         $book->delete();
-        return redirect()->route('books.index');
+
+        return redirect()
+            ->route('books.index')
+            ->with('success', 'Buku berhasil dihapus.');
     }
 }
