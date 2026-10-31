@@ -1,35 +1,33 @@
+@extends('layouts.app')
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Tambah Buku</title>
-</head>
-<body>
-    <h1>Tambah Buku Baru</h1>
+@section('title', 'Tambah Buku')
+
+@section('content')
+
+    <h2>Tambah Buku Baru</h2>
 
     <form action="{{ route('books.store') }}" method="POST">
         @csrf
 
         <label>Judul Buku</label><br>
         <input type="text" name="title" value="{{ old('title') }}">
-        @error('title') <p>{{ $message }}</p> @enderror
-        <br><br>
+        @error('title') <p style="color:red">{{ $message }}</p> @enderror
+        <br>
 
         <label>Penulis</label><br>
         <input type="text" name="author" value="{{ old('author') }}">
-        @error('author') <p>{{ $message }}</p> @enderror
-        <br><br>
+        @error('author') <p style="color:red">{{ $message }}</p> @enderror
+        <br>
 
         <label>Tahun</label><br>
         <input type="number" name="year" value="{{ old('year') }}">
-        @error('year') <p>{{ $message }}</p> @enderror
-        <br><br>
+        @error('year') <p style="color:red">{{ $message }}</p> @enderror
+        <br>
 
         <label>Stok</label><br>
         <input type="number" name="stock" value="{{ old('stock') }}">
-        @error('stock') <p>{{ $message }}</p> @enderror
-        <br><br>
+        @error('stock') <p style="color:red">{{ $message }}</p> @enderror
+        <br>
 
         <label for="category_id">Kategori</label><br>
         <select name="category_id" id="category_id" required>
@@ -37,17 +35,20 @@
 
             @foreach ($categories as $category)
                 <option value="{{ $category->id }}"
-                {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                    {{ old('category_id') == $category->id ? 'selected' : '' }}>
                     {{ $category->nama }}
                 </option>
             @endforeach
         </select>
 
-        @error('category_id') <p style="color: red;">{{ $message }}</p> @enderror
+        @error('category_id')
+            <p style="color:red">{{ $message }}</p>
+        @enderror
+
         <br><br>
 
         <button type="submit">Simpan Buku</button>
         <a href="{{ route('books.index') }}">Kembali</a>
     </form>
-</body>
-</html>
+
+@endsection

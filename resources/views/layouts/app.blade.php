@@ -6,14 +6,25 @@
     <title>@yield('title') - Library System</title>
 </head>
 <body>
+
     <header>
         <h1>Library System</h1>
+
+        @auth
+            <p>Halo, {{ Auth::user()->name }}</p>
+            <form action="{{ route('logout') }}" method="POST" style="margin-top: 10px; margin-bottom: 15px;">
+                @csrf
+                <button type="submit">Logout</button>
+            </form>
+        @endauth
+
         <nav>
-            <a href="/dashboard">Dashboard</a> |
-            <a href="/books">Books</a> |
-            <a href="/categories">Categories</a> |
-            <a href="/members">Members</a>
+            <a href="{{ route('dashboard') }}">Dashboard</a> |
+            <a href="{{ route('books.index') }}">Books</a> |
+            <a href="{{ route('categories.index') }}">Categories</a> |
+            <a href="{{ route('members.index') }}">Members</a>
         </nav>
+
         <hr>
     </header>
 
@@ -23,7 +34,8 @@
 
     <footer>
         <hr>
-        <p>&copy; 2026 Library System - Praktikum Pemrograman Web Framework</p>
+        <p>&copy; 2026 Library System - Dahlia Rona</p>
     </footer>
+
 </body>
 </html>

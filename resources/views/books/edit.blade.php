@@ -1,48 +1,61 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Buku</title>
-</head>
-<body>
-    <h1>Edit Data Buku</h1>
-    
+@extends('layouts.app')
+
+@section('title', 'Edit Buku')
+
+@section('content')
+
+    <h2>Edit Data Buku</h2>
+
     <form action="{{ route('books.update', $book->id) }}" method="POST">
         @csrf
         @method('PUT')
-        
-        <label>Judul:</label><br>
-        <input type="text" name="title" value="{{ $book->title }}"><br>
-        
-        <label>Penulis:</label><br>
-        <input type="text" name="author" value="{{ $book->author }}"><br>
-        
-        <label>Tahun:</label><br>
-        <input type="number" name="year" value="{{ $book->year }}"><br>
-        
-        <label>Stok:</label><br>
-        <input type="number" name="stock" value="{{ $book->stock }}"><br><br>
-        
-        
-<label for="category_id">Kategori</label>
 
-<select name="category_id" id="category_id">
-    <option value="">Pilih kategori</option>
+        <label>Judul Buku</label><br>
+        <input type="text" name="title"
+            value="{{ old('title', $book->title) }}">
+        @error('title') <p style="color:red">{{ $message }}</p> @enderror
+        <br>
 
-    @foreach ($categories as $category)
-        <option
-            value="{{ $category->id }}"
-            @selected(old('category_id', $book->category_id) == $category->id)
-        >
-            {{ $category->nama }}
-        </option>
-    @endforeach
-</select>
+        <label>Penulis</label><br>
+        <input type="text" name="author"
+            value="{{ old('author', $book->author) }}">
+        @error('author') <p style="color:red">{{ $message }}</p> @enderror
+        <br>
 
-@error('category_id')
-    <p>{{ $message }}</p>
-@enderror
+        <label>Tahun</label><br>
+        <input type="number" name="year"
+            value="{{ old('year', $book->year) }}">
+        @error('year') <p style="color:red">{{ $message }}</p> @enderror
+        <br>
 
-        <button type="submit">Update</button>
+        <label>Stok</label><br>
+        <input type="number" name="stock"
+            value="{{ old('stock', $book->stock) }}">
+        @error('stock') <p style="color:red">{{ $message }}</p> @enderror
+        <br>
+
+        <label for="category_id">Kategori</label><br>
+
+        <select name="category_id" id="category_id" required>
+            <option value="">Pilih kategori</option>
+
+            @foreach ($categories as $category)
+                <option value="{{ $category->id }}"
+                    {{ old('category_id', $book->category_id) == $category->id ? 'selected' : '' }}>
+                    {{ $category->nama }}
+                </option>
+            @endforeach
+        </select>
+
+        @error('category_id')
+            <p style="color:red">{{ $message }}</p>
+        @enderror
+
+        <br><br>
+
+        <button type="submit">Update Buku</button>
+        <a href="{{ route('books.index') }}">Kembali</a>
+
     </form>
-</body>
-</html>
+
+@endsection
