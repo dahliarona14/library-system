@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,7 +21,6 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');
 
@@ -35,4 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/members', [MemberController::class, 'index'])
         ->name('members.index');
 
+    Route::middleware('can:manage-users')->group(function () {
+        Route::resource('users', UserController::class);
+    });
 });

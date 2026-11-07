@@ -18,12 +18,18 @@
             </form>
         @endauth
 
-        <nav>
-            <a href="{{ route('dashboard') }}">Dashboard</a> |
-            <a href="{{ route('books.index') }}">Books</a> |
-            <a href="{{ route('categories.index') }}">Categories</a> |
-            <a href="{{ route('members.index') }}">Members</a>
-        </nav>
+    <nav>
+        <a href="{{ route('dashboard') }}">Dashboard</a> |
+        <a href="{{ route('books.index') }}">Books</a> |
+        <a href="{{ route('categories.index') }}">Categories</a> |
+        <a href="{{ route('members.index') }}">Members</a>
+
+        @can('manage-users')
+            |
+            <a href="{{ route('users.index') }}">Manajemen Pengguna</a>
+        @endcan
+    </nav>
+
 
         <hr>
     </header>
