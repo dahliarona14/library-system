@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Member;
 
 class MemberController extends Controller
 {
     public function index()
     {
-        $members = User::select('name', 'email')->get();
+        $members = Member::all();
 
         return view('members.index', compact('members'));
     }

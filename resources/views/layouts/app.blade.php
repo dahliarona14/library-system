@@ -23,6 +23,7 @@
         <a href="{{ route('books.index') }}">Books</a> |
         <a href="{{ route('categories.index') }}">Categories</a> |
         <a href="{{ route('members.index') }}">Members</a>
+        <a href="{{ route('borrowings.index') }}">Peminjaman</a>
 
         @can('manage-users')
             |

@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BorrowingController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,6 +24,12 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');
+
+    Route::resource('borrowings', BorrowingController::class)
+        ->only(['index', 'create', 'store']);
+
+        Route::post('/borrowings/{id}/return', [BorrowingController::class, 'returnBook'])
+            ->name('borrowings.return');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
